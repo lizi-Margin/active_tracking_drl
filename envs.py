@@ -63,7 +63,8 @@ def create_env(env_id, client_id, remotes, **kwargs):
     if spec.tags.get('flashgames', False):
         return create_flash_env(env_id, client_id, remotes, **kwargs)
     elif spec.tags.get('atari', False) and spec.tags.get('vnc', False):
-        return create_vncatari_env(env_id, client_id, remotes, **kwargs)
+        # return create_vncatari_env(env_id, client_id, remotes, **kwargs)
+        assert False
     else:
         # Assume atari.
         assert "." not in env_id  # universe environments have dots in names.
@@ -99,21 +100,21 @@ def create_flash_env(env_id, client_id, remotes, **_):
     return env
 
 
-def create_vncatari_env(env_id, client_id, remotes, **_):
-    env = gym.make(env_id)
-    env = Vision(env)
-    env = Logger(env)
-    env = BlockingReset(env)
-    env = GymCoreAction(env)
-    env = AtariRescale42x42(env)
-    env = EpisodeID(env)
-    env = DiagnosticsInfo(env)
-    env = Unvectorize(env)
+# def create_vncatari_env(env_id, client_id, remotes, **_):
+#     env = gym.make(env_id)
+#     env = Vision(env)
+#     env = Logger(env)
+#     env = BlockingReset(env)
+#     env = GymCoreAction(env)
+#     env = AtariRescale42x42(env)
+#     env = EpisodeID(env)
+#     env = DiagnosticsInfo(env)
+#     env = Unvectorize(env)
 
-    logger.info('Connecting to remotes: %s', remotes)
-    fps = env.metadata['video.frames_per_second']
-    env.configure(remotes=remotes, start_timeout=15 * 60, fps=fps, client_id=client_id)
-    return env
+#     logger.info('Connecting to remotes: %s', remotes)
+#     fps = env.metadata['video.frames_per_second']
+#     env.configure(remotes=remotes, start_timeout=15 * 60, fps=fps, client_id=client_id)
+#     return env
 
 
 def create_unrealcv_env(env_full_name):
